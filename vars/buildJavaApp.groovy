@@ -1,6 +1,9 @@
 def call(Map args=[:], Closure body={}) {
     node {
-        git url: "${args.repo}", branch: "${args.branch}"
+        //git url: "${args.repo}", branch: "${args.branch}"
+        checkout scm: [$class: 'GitSCM',
+                       branches: [[name: 'refs/tags/${args.branch}']],
+                       userRemoteConfigs: [[url: "${args.repo}"]]]
 
         stage("Compile") {
             sh "./mvnw clean compile"

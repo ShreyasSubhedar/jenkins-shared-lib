@@ -1,5 +1,7 @@
 ## Jenkins Shared Lib
 
+Using example: https://itnext.io/how-to-build-your-own-jenkins-shared-library-9dc129db260c
+
 - Setup the shared lib
 - Create a pipeline DSL job
 ```

@@ -1,6 +1,6 @@
 def call(Map args=[:], Closure body={}) {
     node {
-        git url: ${args.repo}
+        git url: '${args.repo}'
 
         stage("Compile") {
             sh "./mvnw clean compile"

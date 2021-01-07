@@ -7,7 +7,7 @@ and has been extended to include some `JenkinsPipelineSpecification` groovy file
 
 - Create the `Global Pipeline librairies using this url: `http://localhost:8080/configure`. Define the name of the shared lib, check the box `Load implicitly`
   and pass the Git URL of the project to be clones
-- Create next a `Pipeline DSL job` using the following syntax:
+- Create next a `Pipeline NodeJS DSL job` using the following syntax:
 ```
 node {
     env.NODEJS_HOME = "${tool 'node'}"
@@ -16,5 +16,13 @@ node {
     buildJavascriptApp deploy: false, {
         notify type: "slack", message: "Build succeeded"
     }
+}
+```
+
+or `Pipeline DSL` using the `buildJavaApp.groovy` script
+
+```
+node { 
+    buildJavaApp(repo: https://github.com/snowdrop/rest-http-example.git)
 }
 ```

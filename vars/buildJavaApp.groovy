@@ -18,7 +18,9 @@ def call(Map args=[:], Closure body={}) {
         }
 
         stage("Package Artifact Jar") {
-            sh "./mvnw package -DskipTests=true"
+            if (args.package) {
+                sh "./mvnw package -DskipTests=true"
+            }
         }
         body()
     }

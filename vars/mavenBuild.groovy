@@ -23,7 +23,7 @@ def call(Map params = [:]) {
     if (dependencyTree) {
         log(level: 'WARN', text: "mavenBuild: Execute dependency:tree")
         result = sh(script: "mvn -B dependency:tree", returnStdout: true)
-        writeFile(file: "${env.WORKSPACE}/report.txt", text: result)
+        writeFile(file: "${env.WORKSPACE}/../report.txt", text: result)
     }
 
 }

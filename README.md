@@ -23,6 +23,9 @@ or `Pipeline DSL` using the `buildJavaApp.groovy` script
 
 ```
 node { 
-    buildJavaApp repo: https://github.com/snowdrop/rest-http-example.git, branch: "2.4.3-1", deploy: false
+    buildJavaApp(
+      repo: https://github.com/snowdrop/rest-http-example.git,
+      branch: "2.4.3-1",
+      deploy: false)
 }
 ```

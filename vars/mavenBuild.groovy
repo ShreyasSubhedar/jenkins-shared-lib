@@ -1,8 +1,11 @@
+import javassist.util.proxy.FactoryHelper
+
 def call(Map params = [:]) {
     def compile = params.containsKey('compile') ? params.get('compile') : true
     def test = params.containsKey('test') ? params.get('test') : false
     def packaging = params.containsKey('package') ? params.get('package') : false
     def dependencyTree = params.containsKey('dependencyTree') ? params.get('dependencyTree') : false
+    def result
 
     if (compile) {
         log(level: 'WARN', text: "mavenBuild: Execute compile goal")
@@ -21,7 +24,8 @@ def call(Map params = [:]) {
 
     if (dependencyTree) {
         log(level: 'WARN', text: "mavenBuild: Execute dependency:tree")
-        sh(script: "mvn -B dependency:tree")
+        result = sh(script: "mvn -B dependency:tree", returnStdout: true)
+        writeFile(file: "${env.WORKSPACE}/report.txt", text: result)
     }
 
 }

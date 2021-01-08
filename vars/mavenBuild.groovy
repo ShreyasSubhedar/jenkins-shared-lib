@@ -3,21 +3,22 @@ def call(Map params = [:]) {
     def test = params.containsKey('test') ? params.get('test') : false
     def packaging = params.containsKey('package') ? params.get('package') : false
     def dependencyTree = params.containsKey('dependencyTree') ? params.get('dependencyTree') : false
+    def workdir = params.containsKey('workdir') ? params.workdir : "${env.WORKSPACE}"
 
     if (compile) {
-        sh(script: "./mvnw clean compile")
+        sh(script: "./${workdir}/mvnw clean compile")
     }
 
     if (test) {
-        sh(script: "./mvnw test")
+        sh(script: "/${workdir}/mvnw test")
     }
 
     if (packaging) {
-        sh(script: "./mvnw package -DskipTests=true")
+        sh(script: "/${workdir}/mvnw package -DskipTests=true")
     }
 
     if (dependencyTree) {
-        sh(script: "./mvnw dependency:tree")
+        sh(script: "/${workdir}/mvnw dependency:tree")
     }
 
 }

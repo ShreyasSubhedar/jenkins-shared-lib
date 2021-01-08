@@ -26,5 +26,14 @@ node {
     removeDependencyManagementTag()
     
     mavenBuild(dependencyTree: true, compile: false)
+    
+    def status = gitStatus()
+    if (status.contains("nothing to commit, working tree clean")) {
+      println("No Git difference")     
+    } else {
+      println("Git difference observed")   
+      sh "exit 1"
+    }
+
 }
 ```

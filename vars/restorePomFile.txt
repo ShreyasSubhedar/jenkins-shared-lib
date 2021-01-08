@@ -1,0 +1,13 @@
+Restore the pom.xml.<bk_ext> to pom.xml
+
+```
+restorePomFile()
+```
+
+or
+
+```
+restorePomFile(ext: .bk)
+```
+
+* *ext*: the extension to be used to restore the backuped pom.xml file

@@ -1,0 +1,34 @@
+Perform a checkout from the SCM configuration on a folder inside the workspace,
+if branch, repo, and credentialsId are defined make a checkout using those parameters.
+
+For security reasons PRs from not Elastic organization or with write permissions
+on the repo are block at this point see [githubPrCheckApproved](#githubPrCheckApproved),
+whoever if you login in the Jenkins UI, it would be always possible to trigger
+the job manually from the Jenkins UI.
+
+```
+gitCheckout()
+```
+
+```
+gitCheckout(basedir: 'sub-folder')
+```
+
+```
+gitCheckout(basedir: 'sub-folder', branch: 'master',
+  repo: 'git@github.com:elastic/apm-pipeline-library.git',
+  credentialsId: 'credentials-id',
+  reference: '/var/lib/jenkins/reference-repo.git')
+```
+
+* *basedir*: directory where checkout the sources.
+* *repo*: the repository to use.
+* *credentialsId*: the credentials to access to the repository.
+* *branch*: the branch to checkout from the repo.
+* *reference*: Repository to be used as reference repository.
+* *githubNotifyFirstTimeContributor*: Whether to notify the status if first time contributor. Default: false
+* *shallow*: Whether to enable the shallow cloning. Default: false
+* *depth*: Set shallow clone depth. Default: 5
+* *retry*: Set the number of retries if there are issues when cloning. Default: 3
+
+_NOTE_: 'shallow' is forced to be disabled when running on Pull Requests

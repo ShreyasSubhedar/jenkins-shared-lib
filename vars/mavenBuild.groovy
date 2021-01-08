@@ -6,19 +6,19 @@ def call(Map params = [:]) {
     def workdir = params.containsKey('workdir') ? params.workdir : "${env.WORKSPACE}"
 
     if (compile) {
-        sh(script: "./${workdir}/mvnw clean compile")
+        sh(script: "mvn clean compile")
     }
 
     if (test) {
-        sh(script: "/${workdir}/mvnw test")
+        sh(script: "mvn test")
     }
 
     if (packaging) {
-        sh(script: "/${workdir}/mvnw package -DskipTests=true")
+        sh(script: "mvn package -DskipTests=true")
     }
 
     if (dependencyTree) {
-        sh(script: "/${workdir}/mvnw dependency:tree")
+        sh(script: "mvn dependency:tree")
     }
 
 }

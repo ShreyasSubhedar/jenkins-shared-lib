@@ -14,12 +14,9 @@ def call(Map params = [:]){
     writeFile(file: "${pomBackupFileName}", text: pomXml)
 
     println "Remove <dependencyManagement> tag from the pom.xml to allow to control if the GAVs exist"
-    def pomModified = pomXml
-            .replace('<dependencyManagement>', '')
-            .replace('</dependencyManagement>', '')
-    pomXml = pomModified
-    writeFile(file: "${pomFileName}", text: pomXml)
-    println pomXml.txt
+    def pomModified = pomXml.replace('<dependencyManagement>', '').replace('</dependencyManagement>', '')
+    writeFile(file: "${pomFileName}", text: pomModified)
+    println pomModified
 
     return ext
 }

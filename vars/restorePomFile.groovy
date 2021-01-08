@@ -18,7 +18,7 @@ def call(Map params = [:]){
 
     if (remove) {
         // TODO: Check why file is not deleted using --> new File(pomBackupFileName).delete()
-        sh(script: "rm ${pomFileName}")
+        sh(script: "rm ${pomBackupFileName}")
         log(level: 'WARN', text: "'${pomBackupFileName}' file deleted")
     }
 }

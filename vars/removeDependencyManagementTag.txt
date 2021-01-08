@@ -1,0 +1,5 @@
+Remove <dependencyManagement>, <dependencyManagement> tag from the pom.xml
+
+```
+removeDependencyManagementTag()
+```

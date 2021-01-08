@@ -12,4 +12,5 @@ def call(Map params = [:]){
     println "Restore pom file to ${pomBackupFileName}"
     def pomXml = readFile(file: "${pomBackupFileName}")
     writeFile(file: "${pomFileName}", text: pomXml)
+    log(level: 'WARN', text: "pom.xml file restored")
 }

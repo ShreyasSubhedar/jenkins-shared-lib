@@ -18,6 +18,6 @@ def call(Map params = [:]){
 
     if (remove) {
         boolean fileSuccessfullyDeleted = new File(pomBackupFileName).delete()
-        log(level: 'WARN', text: "File successfuklly deleted: '${fileSuccessfullyDeleted}'")
+        log(level: 'WARN', text: "File successfully deleted: '${fileSuccessfullyDeleted}'")
     }
 }

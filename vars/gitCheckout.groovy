@@ -21,114 +21,17 @@
 
  gitCheckout()
 
- gitCheckout(basedir: 'sub-folder')
+ gitCheckout(repo: 'git@github.com:elastic/apm-pipeline-library.git')
 
- gitCheckout(basedir: 'sub-folder', branch: 'master',
- repo: 'git@github.com:elastic/apm-pipeline-library.git',
- credentialsId: 'credentials-id',
- reference: '/var/lib/jenkins/reference-repo.git')
+ gitCheckout(branch: 'master', repo: 'git@github.com:elastic/apm-pipeline-library.git')
 
  */
 def call(Map params = [:]) {
-    def basedir = params.containsKey('basedir') ? params.basedir : "src"
     def repo = params?.repo
-    def credentialsId = params?.credentialsId
     def branch = params?.branch
-    def reference = params?.reference
-    def mergeRemote = params.containsKey('mergeRemote') ? params.mergeRemote : "origin"
-    def mergeTarget = params?.mergeTarget
-    def notify = params.containsKey('githubNotifyFirstTimeContributor') ? params.get('githubNotifyFirstTimeContributor') : false
-    def shallowValue = params.containsKey('shallow') ? params.get('shallow') : false
-    def depthValue = params.containsKey('depth') ? params.get('depth') : 5
-    def retryValue = params.containsKey('retry') ? params.get('retry') : 3
-    def refspec = '+refs/pull/*/head:refs/remotes/origin/pr/*'
 
-    if (!env?.GIT_URL && params.repo) {
-        log(level: 'DEBUG', text: 'Override GIT_URL with the params.repo to support simple pipeline rather than multibranch pipelines only.')
-        env.GIT_URL = params.repo
-    }
+    checkout scm: [$class           : 'GitSCM',
+                   branches         : [[name: 'refs/tags/' + "${branch}"]],
+                   userRemoteConfigs: [[url: "${repo}"]]]
 
-    // isCustomised
-    def customised = params.containsKey('mergeRemote') || params.containsKey('shallow') || params.containsKey('depth') ||
-            params.containsKey('reference') || params.containsKey('mergeTarget') || params.containsKey('credentialsId') ||
-            params.containsKey('repo') || params.containsKey('branch')
-
-    def githubCheckContext = 'CI-approved contributor'
-    def extensions = []
-
-    if (shallowValue && mergeTarget != null) {
-        // https://issues.jenkins-ci.org/browse/JENKINS-45771
-        log(level: 'INFO', text: "'shallow' is forced to be disabled when using mergeTarget to avoid refusing to merge unrelated histories")
-        shallowValue = false
-    }
-
-    extensions.add([$class: 'CloneOption', depth: shallowValue ? depthValue : 0, noTags: false, reference: "${reference != null ? reference : ''}", shallow: shallowValue])
-    log(level: 'DEBUG', text: "gitCheckout: Reference repo ${reference != null ? 'enabled' : 'disabled'} ${extensions.toString()}")
-
-    if (mergeTarget != null) {
-        extensions.add([$class: 'PreBuildMerge', options: [mergeTarget: "${mergeTarget}", mergeRemote: "${mergeRemote}"]])
-        log(level: 'DEBUG', text: "gitCheckout: Reference repo enabled ${extensions.toString()}")
-    }
-
-    dir("${basedir}") {
-        if (customised && isDefaultSCM(branch)) {
-            log(level: 'INFO', text: "gitCheckout: Checkout SCM ${env.BRANCH_NAME} with some customisation.")
-            checkout([$class                           : 'GitSCM', branches: scm.branches,
-                      doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
-                      extensions                       : extensions,
-                      submoduleCfg                     : scm.submoduleCfg,
-                      userRemoteConfigs                : scm.userRemoteConfigs])
-        } else if (isDefaultSCM(branch)) {
-            log(level: 'INFO', text: "gitCheckout: Checkout SCM ${env.BRANCH_NAME} with default customisation from the Item.")
-            checkout scm
-        } else if (branch && branch != '' && repo && credentialsId) {
-            log(level: 'INFO', text: "gitCheckout: Checkout ${branch} from ${repo} with credentials ${credentialsId}")
-            checkout([$class                           : 'GitSCM', branches: [[name: "${branch}"]],
-                      doGenerateSubmoduleConfigurations: false,
-                      extensions                       : extensions,
-                      submoduleCfg                     : [],
-                      userRemoteConfigs                : [[
-                                                                  refspec      : '+refs/heads/*:refs/remotes/origin/* +refs/pull/*/head:refs/remotes/origin/PR/*',
-                                                                  credentialsId: "${credentialsId}",
-                                                                  url          : "${repo}"]]])
-        } else {
-            def message = 'No valid SCM config passed. '
-            if (env.BRANCH_NAME && branch) {
-                message += 'Please use the checkout either with the env.BRANCH_NAME or the gitCheckout(branch: , repo: , credentialsId: ...) format.'
-            } else if (repo || credentialsId || branch) {
-                message += "Please double check the parameters branch=${branch}, repo=${repo} or credentialsId=${credentialsId} are passed."
-            } else {
-                message += "Please double check the environment variable env.BRANCH_NAME=${env.BRANCH_NAME} is correct."
-            }
-            error "${message}"
-        }
-
-        // Fetch all the references. It requires the ORG_NAME/REPO_NAME which it's set with the githubEnv.setGitRepoEnvironment step.
-        githubEnv.setGitRepoEnvironment()
-        fetchPullRefs(refspec)
-
-        // Set all the environment variables that other steps can consume later on.
-        githubEnv()
-
-        log(level: 'DEBUG', text: 'Neither a user trigger nor a comment trigger, it is required to evaluate the PR ownership')
-        try {
-            githubPrCheckApproved()
-            if (notify) {
-                githubNotify(context: githubCheckContext, status: 'SUCCESS', targetUrl: ' ')
-            }
-        } catch (err) {
-            if (notify) {
-                githubNotify(context: githubCheckContext, description: 'It requires manual inspection', status: 'FAILURE', targetUrl: ' ')
-            }
-            throw err
-        }
-    }
-}
-
-def isDefaultSCM(branch) {
-    return env?.BRANCH_NAME && branch == null
-}
-
-def fetchPullRefs(refs) {
-    gitCmd(cmd: 'fetch', args: refs, store: true)
 }

@@ -34,7 +34,7 @@ node {
     if (status.contains("nothing to commit, working tree clean")) {
       println("No Git difference :-)")     
     } else {  
-      log(level: 'ERROR', text: "Git difference observed ${status}. Consult the report.txt file under the workspace")
+      log(level: 'ERROR', text: "Git difference observed '${status}'. Consult the report.txt file under the workspace")
       sh "exit 1"
     }
 }

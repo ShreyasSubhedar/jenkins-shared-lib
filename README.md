@@ -14,6 +14,10 @@ environment {
     PIPELINE_LOG_LEVEL='INFO'
 }
 node { 
+    // Install AnsiColor plugin
+    ansiColor('xterm') {
+      echo "TERM=${env.TERM}"
+    }
     gitCheckout(
       repo: "https://github.com/snowdrop/rest-http-example.git",
       branch: "2.3.4-1")

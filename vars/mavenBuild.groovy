@@ -5,19 +5,22 @@ def call(Map params = [:]) {
     def dependencyTree = params.containsKey('dependencyTree') ? params.get('dependencyTree') : false
 
     if (compile) {
+        log(level: 'WARN', text: "mavenBuild: Execute compile goal")
         sh(script: "mvn clean compile")
     }
 
     if (test) {
+        log(level: 'WARN', text: "mavenBuild: Execute test goal")
         sh(script: "mvn test")
     }
 
     if (packaging) {
+        log(level: 'WARN', text: "mavenBuild: Execute package goal")
         sh(script: "mvn package -DskipTests=true")
     }
 
     if (dependencyTree) {
-        log(level: 'INFO', text: "mavenBuild: Execute dependency:tree")
+        log(level: 'WARN', text: "mavenBuild: Execute dependency:tree")
         sh(script: "mvn -B dependency:tree")
     }
 

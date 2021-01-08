@@ -28,13 +28,13 @@ node {
     removeDependencyManagementTag()
     
     mavenBuild(dependencyTree: true, compile: false)
-    restorePomFile(ext: '.bk')
+    restorePomFile(ext: .bk, remove: true)
     
     def status = gitStatus()
     if (status.contains("nothing to commit, working tree clean")) {
-      println("No Git difference")     
-    } else {
-      println("Git difference observed")   
+      println("No Git difference :-)")     
+    } else {  
+      log(level: 'ERROR', text: "Git difference observed ${status}. Consult the report.txt file under the workspace")
       sh "exit 1"
     }
 }

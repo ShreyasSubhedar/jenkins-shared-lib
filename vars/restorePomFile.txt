@@ -10,4 +10,11 @@ or
 restorePomFile(ext: .bk)
 ```
 
-* *ext*: the extension to be used to restore the backuped pom.xml file
+or
+
+```
+restorePomFile(ext: .bk, remove: true)
+```
+
+* *ext*: The extension to be used to restore the backuped pom.xml file
+* *remove*: Delete the backup file

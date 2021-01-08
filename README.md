@@ -28,7 +28,7 @@ node {
     removeDependencyManagementTag()
     
     mavenBuild(dependencyTree: true, compile: false)
-    restorePomfile(ext: '.bk')
+    restorePomFile(ext: '.bk')
     
     def status = gitStatus()
     if (status.contains("nothing to commit, working tree clean")) {

@@ -1,5 +1,3 @@
-import javassist.util.proxy.FactoryHelper
-
 def call(Map params = [:]) {
     def compile = params.containsKey('compile') ? params.get('compile') : true
     def test = params.containsKey('test') ? params.get('test') : false

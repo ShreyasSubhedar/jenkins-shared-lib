@@ -1,4 +1,4 @@
-TODO. To be defined and explainex about the purpose of this lib and how to use it
+TODO. To be defined and explained about the purpose of this lib and how to use it
 
 ```
 buildJavaApp()

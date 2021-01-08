@@ -1,0 +1,13 @@
+Rename the pom.xml using the extension passed as parameter
+
+```
+renamePomFile()
+```
+
+or
+
+```
+renamePomFile.txt(ext: .back)
+```
+
+* *ext*: the extension to be used to rename the pom.xml file

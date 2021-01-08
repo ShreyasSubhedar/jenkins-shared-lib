@@ -18,7 +18,7 @@ def call(Map params = [:]) {
 
     if (dependencyTree) {
         log(level: 'INFO', text: "mavenBuild: Execute dependency:tree")
-        sh(script: "mvn dependency:tree")
+        sh(script: "mvn -B dependency:tree")
     }
 
 }

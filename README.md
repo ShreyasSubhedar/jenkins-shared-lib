@@ -10,22 +10,25 @@ and has been extended to include some `JenkinsPipelineSpecification` groovy file
 - Create next a `Pipeline DSL job` using the following syntax:
 ```
 @Library('mytools') _
+
 environment {
     PIPELINE_LOG_LEVEL='INFO'
 }
-node { 
-    // Install AnsiColor plugin
+
+node {
     ansiColor('xterm') {
       echo "TERM=${env.TERM}"
     }
+    //sh "printenv"
     gitCheckout(
-      repo: "https://github.com/snowdrop/rest-http-example.git",
-      branch: "2.3.4-1")
+      repo: "https://github.com/snowdrop/spring-boot-bom.git",
+      branch: "2.3.6.Alpha2")
     
     renamePomFile(ext: '.bk')
     removeDependencyManagementTag()
     
     mavenBuild(dependencyTree: true, compile: false)
+    restorePomfile(ext: '.bk')
     
     def status = gitStatus()
     if (status.contains("nothing to commit, working tree clean")) {
@@ -34,6 +37,5 @@ node {
       println("Git difference observed")   
       sh "exit 1"
     }
-
 }
 ```

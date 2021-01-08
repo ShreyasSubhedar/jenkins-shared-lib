@@ -6,6 +6,7 @@
 
 def call(Map params = [:]){
     def ext = params.containsKey('ext') ? params.ext : ".bk"
+
     def pomFileName = "pom.xml"
     def pomBackupFileName = "${pomFileName}${ext}"
 

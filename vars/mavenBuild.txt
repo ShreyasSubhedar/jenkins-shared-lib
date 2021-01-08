@@ -1,0 +1,17 @@
+Execute a maven goal such as : compile, test, package
+
+```
+mavenBuild(compile: true)
+```
+
+```
+mavenBuild(compile: true, test: true, package:false)
+```
+
+```
+mavenBuild(compile: true, test: true, package:true)
+```
+
+* *compile*: boolean to test if `mvn clean compile` will run. Default: true
+* *test*: boolean to test if `mvn test` step should be executed. Default: false
+* *package*: boolean to test if `mvn package` step should be done. Default: false

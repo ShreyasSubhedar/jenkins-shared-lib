@@ -6,5 +6,6 @@
 
 def call(Map params = [:]){
     def ext = params.containsKey('ext') ? params.basedir : ".bk"
-    println("Extension : $ext")
+    println("Extension : ${ext}")
+    log(level: 'INFO', text: "Extension using log: ${ext}")
 }

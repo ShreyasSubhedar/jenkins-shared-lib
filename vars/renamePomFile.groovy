@@ -20,4 +20,6 @@ def call(Map params = [:]){
     pomXml.text = pomModified
     writeFile(file: '${pomFileName}', text: pomXml.text)
     println pomXml.txt
+
+    return ext
 }

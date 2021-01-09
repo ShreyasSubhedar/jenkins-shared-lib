@@ -9,7 +9,7 @@ def call(Map params = [:]){
     def basedir =  params.containsKey('basedir') ? params.basedir : "src"
 
     def pomFileName = "${basedir}/pom.xml"
-    def pomBackupFileName = "${basedir}/${pomFileName}${ext}"
+    def pomBackupFileName = "${pomFileName}${ext}"
 
     log(level: 'WARN', text: "Backup pom file to ${pomBackupFileName}")
     def pomXml = readFile(file: "${pomFileName}")

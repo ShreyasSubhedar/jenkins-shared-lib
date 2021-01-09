@@ -10,7 +10,7 @@ def call(Map params = [:]){
     def remove = params.containsKey('removeBackup') ? params.removeBackup : true
 
     def pomFileName = "${basedir}/pom.xml"
-    def pomBackupFileName = "${basedir}/${pomFileName}${ext}"
+    def pomBackupFileName = "${pomFileName}${ext}"
 
     println "Restore pom file to ${pomBackupFileName}"
     def pomXml = readFile(file: "${pomBackupFileName}")

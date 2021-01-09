@@ -5,6 +5,7 @@
  */
 
 def call(Map params = [:]){
+    def basedir =  params.containsKey('basedir') ? params.basedir : "src"
     def pomFileName = "pom.xml"
 
     log(level: 'WARN', text: "Remove <dependencyManagement> tag from the pom.xml to allow to control if the GAVs exist")

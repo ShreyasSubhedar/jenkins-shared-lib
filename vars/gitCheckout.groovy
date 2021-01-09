@@ -29,9 +29,11 @@
 def call(Map params = [:]) {
     def repo = params?.repo
     def branch = params?.branch
+    def basedir =  params.containsKey('basedir') ? params.basedir : "src"
 
-    checkout scm: [$class           : 'GitSCM',
-                   branches         : [[name: 'refs/tags/' + "${branch}"]],
-                   userRemoteConfigs: [[url: "${repo}"]]]
-
+    dir("${basedir}"){
+        checkout scm: [$class           : 'GitSCM',
+                       branches         : [[name: 'refs/tags/' + "${branch}"]],
+                       userRemoteConfigs: [[url: "${repo}"]]]
+    }
 }

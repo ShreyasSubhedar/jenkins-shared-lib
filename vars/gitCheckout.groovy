@@ -29,7 +29,7 @@
 def call(Map params = [:]) {
     def repo = params?.repo
     def branch = params?.branch
-    def basedir =  params.containsKey('basedir') ? params.basedir : "src"
+    def basedir =  params.containsKey('baseDir') ? params.baseDir : "src"
 
     dir("${basedir}"){
         checkout scm: [$class           : 'GitSCM',

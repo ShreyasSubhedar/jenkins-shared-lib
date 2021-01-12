@@ -33,7 +33,7 @@ def call(Map params = [:]) {
 
     dir("${basedir}"){
         checkout scm: [$class           : 'GitSCM',
-                       branches         : [[name: 'refs/tags/' + "${branch}"]],
+                       branches         : [[name: "${branch}"]],
                        userRemoteConfigs: [[url: "${repo}"]]]
     }
 }
